@@ -18,6 +18,7 @@ using (DbConnection connection = new SqlConnection(connectionString))
     IStarRepository starRepository = new StarRepository(connection);
     IPlanetRepository planetRepository = new PlanetRepository(connection);
 
+    /*
     Console.WriteLine("Création d'une galaxie : ");
     Galaxy g1 = galaxyRepository.Create(new Galaxy()
     {
@@ -71,6 +72,7 @@ using (DbConnection connection = new SqlConnection(connectionString))
     Console.WriteLine("Ajouter le lien entre les planetes et son étoile");
     starRepository.AddPlanet(sun.Id, p1.Id);
     starRepository.AddPlanets(sun.Id, [p2.Id, p3.Id, p4.Id]);
+    */
 
 
     // TODO Tester la DB via EFCore
