@@ -10,8 +10,9 @@
 
 ## Galaxy
 ```
-- Id        INT
-- Name      NVARCHAR
+- Id          INT
+- Name        NVARCHAR
+- Description NVARCHAR
 ```
 
 ## Star
@@ -20,6 +21,10 @@
 - Name      NVARCHAR
 - isDeath   BOOLEAN
 ```
+
+## Rel__Star_Planet
+- StarId
+- PlanetId
 
 # Relation entre les tables
 One to many :
