@@ -12,9 +12,9 @@ namespace Univers.DAL.ADO.Repositories
 
         public Star Create(Star model)
         {
-            string sql = "INSERT INTO [Star]([Name], [IsDeath])" +
+            string sql = "INSERT INTO [Star]([Name], [IsDeath], [GalaxyId])" +
                 " OUTPUT [inserted].*" +
-                " VALUES (@Name, @IsDeath);";
+                " VALUES (@Name, @IsDeath, @GalaxyId);";
 
             return _Connection.QuerySingle<Star>(sql, model);
         }
