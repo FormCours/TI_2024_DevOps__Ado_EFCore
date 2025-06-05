@@ -19,7 +19,7 @@ namespace Univers.DAL.ADO.Repositories
                 //Id = Convert.ToInt32(record["Id"]),
                 Name = (string)record["Name"],
                 Satelite = (int)record["Satelite"],
-                Gravity = (int)record["Gravity"],
+                Gravity = Convert.ToDouble(record["Gravity"]),
             };
         } 
 
