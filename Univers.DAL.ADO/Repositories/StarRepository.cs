@@ -33,12 +33,12 @@ namespace Univers.DAL.ADO.Repositories
             return _Connection.QuerySingleOrDefault<Star>(sql, new { Id = id });
         }
 
-        public bool AddPlanet(int id, Planet planet)
+        public bool AddPlanet(int id, int planetId)
         {
             throw new NotImplementedException();
         }
 
-        public bool AddPlanets(int id, IEnumerable<Planet> planets)
+        public bool AddPlanets(int id, IEnumerable<int> planetIds)
         {
             throw new NotImplementedException();
         }
