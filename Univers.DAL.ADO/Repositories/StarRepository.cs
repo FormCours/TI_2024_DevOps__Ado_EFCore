@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using System.Data.Common;
+using System.Dynamic;
 using Univers.Common.Models;
 using Univers.Common.Repositories;
 
@@ -56,11 +57,13 @@ namespace Univers.DAL.ADO.Repositories
         {
             List<int> currentPlanetIds = planetIds.ToList();
             List<string> sqlInputQuery = new List<string>();
-            Dictionary<string, int> sqlInputValue = new Dictionary<string, int>();
+            var sqlInputValue = new ExpandoObject() as IDictionary<string, object>;
+            sqlInputValue.Add("StarId", id);
 
-            for (int i = 0; i < currentPlanetIds.Count; i++) {
+            for (int i = 0; i < currentPlanetIds.Count; i++)
+            {
                 sqlInputQuery.Add($"(@StarId, @PlanetId{i})");
-                sqlInputValue.Add($"@PlanetId{i}", currentPlanetIds[i]);
+                sqlInputValue.Add("PlanetId" + i, currentPlanetIds[i]);
             }
 
             string sql = "INSERT INTO [Rel__Star_Planet]([StarId], [PlanetId])" +
