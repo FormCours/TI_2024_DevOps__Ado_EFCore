@@ -73,7 +73,26 @@ namespace Univers.DAL.ADO.Repositories
 
         public bool Update(int id, Galaxy data)
         {
-            throw new NotImplementedException();
+            using DbTransaction transaction = _Connection.BeginTransaction();
+            using DbCommand cmd = _Connection.CreateCommand();
+            cmd.Transaction = transaction;
+            
+            cmd.CommandText = "Update Galaxy " +
+                "SET Name=@Name, Description=@Description " +
+                "WHERE Id = @Id";
+            AddCommandParameter(cmd, "Name", data.Name);
+            AddCommandParameter(cmd, "Description", data.Description);
+            AddCommandParameter(cmd, "Id", id);
+
+            int nbRow = cmd.ExecuteNonQuery();
+            if(nbRow > 1)
+            {
+                transaction.Rollback();
+                throw new Exception("Two Galaxy with same id");
+            }
+
+            transaction.Commit();
+            return nbRow == 1;
         }
         public bool Delete(int id)
         {
