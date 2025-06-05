@@ -35,17 +35,66 @@ namespace Univers.DAL.ADO.Repositories
 
         public bool AddPlanet(int id, int planetId)
         {
-            throw new NotImplementedException();
+            string sql = "INSERT INTO [Rel__Star_Planet]([StarId], [PlanetId])" +
+                " VALUES (@StarId, @PlanetId);";
+            try
+            {
+                _Connection.Execute(sql, new
+                {
+                    StarId = id,
+                    PlanetId = planetId
+                });
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool AddPlanets(int id, IEnumerable<int> planetIds)
         {
-            throw new NotImplementedException();
+            List<int> currentPlanetIds = planetIds.ToList();
+            List<string> sqlInputQuery = new List<string>();
+            Dictionary<string, int> sqlInputValue = new Dictionary<string, int>();
+
+            for (int i = 0; i < currentPlanetIds.Count; i++) {
+                sqlInputQuery.Add($"(@StarId, @PlanetId{i})");
+                sqlInputValue.Add($"@PlanetId{i}", currentPlanetIds[i]);
+            }
+
+            string sql = "INSERT INTO [Rel__Star_Planet]([StarId], [PlanetId])" +
+                $" VALUES {string.Join(",", sqlInputQuery)};";
+
+            try
+            {
+                _Connection.Execute(sql, sqlInputValue);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool RemovePlanet(int id, int planetId)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM [Rel__Star_Planet]" +
+                " WHERE StarId = @StarId AND PlanetId = @PlanetId";
+
+            try
+            {
+                _Connection.Execute(sql, new
+                {
+                    StarId = id,
+                    PlanetId = planetId
+                });
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool Update(int id, Star data)
@@ -64,7 +113,7 @@ namespace Univers.DAL.ADO.Repositories
                 IsDeath = data.IsDeath,
             }, transaction);
 
-            if(nbRow > 1)
+            if (nbRow > 1)
             {
                 transaction.Rollback();
                 throw new Exception("Two Star with same id");
