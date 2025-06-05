@@ -74,6 +74,9 @@ using (DbConnection connection = new SqlConnection(connectionString))
     starRepository.AddPlanets(sun.Id, [p2.Id, p3.Id, p4.Id]);
     */
 
+    Star s1 = starRepository.GetById(11);
+    Console.WriteLine(s1);
+
 
     // TODO Tester la DB via EFCore
 }

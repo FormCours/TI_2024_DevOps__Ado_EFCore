@@ -29,9 +29,34 @@ namespace Univers.DAL.ADO.Repositories
 
         public Star? GetById(int id)
         {
-            string sql = "SELECT * FROM [Star] WHERE [Id] = @Id";
+            string sql = "SELECT [S].*, [P].*, [G].*"
+                    + " FROM [Star][S]"
+                    + "  LEFT JOIN [Rel__Star_Planet] [SP] ON [S].[Id] = [SP].[StarId]"
+                    + "  LEFT JOIN [Planet] [P] ON [P].[Id] = [SP].[PlanetId]"
+                    + "  LEFT JOIN [Galaxy] [G] ON [G].[Id] = [S].[GalaxyId]"
+                    + " WHERE [S].[Id] = @Id";
 
-            return _Connection.QuerySingleOrDefault<Star>(sql, new { Id = id });
+            // Parametre generique pour les jointures
+            // - Le type des tables joints
+            // - Le type du resultat
+            // Via un délégué lui définir comment lier les données
+
+            var result = _Connection.Query<Star, Planet, Galaxy, Star>(sql, (star, planet, galaxy) =>
+            {
+                star.Planets = [planet];
+                star.Galaxy = galaxy;
+                return star;
+
+            }, new { Id = id });
+
+            var star = result.GroupBy(elem => elem.Id).Select(grp =>
+            {
+                Star s = grp.First();
+                s.Planets = grp.Select(g => g.Planets?.Single())?.ToList();
+                return s;
+            });
+
+            return star.SingleOrDefault();
         }
 
         public bool AddPlanet(int id, int planetId)
