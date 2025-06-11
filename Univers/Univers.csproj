@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Univers.Common\Univers.Common.csproj" />
     <ProjectReference Include="..\Univers.DAL.ADO\Univers.DAL.ADO.csproj" />
+    <ProjectReference Include="..\Univers.DAL.EFCore\Univers.DAL.EFCore.csproj" />
   </ItemGroup>
 
 </Project>

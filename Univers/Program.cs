@@ -3,6 +3,7 @@ using System.Data.Common;
 using Univers.Common.Models;
 using Univers.Common.Repositories;
 using Univers.DAL.ADO.Repositories;
+using Univers.DAL.EFCore;
 
 Console.WriteLine("Demo univers !!!");
 
@@ -72,11 +73,33 @@ using (DbConnection connection = new SqlConnection(connectionString))
     Console.WriteLine("Ajouter le lien entre les planetes et son étoile");
     starRepository.AddPlanet(sun.Id, p1.Id);
     starRepository.AddPlanets(sun.Id, [p2.Id, p3.Id, p4.Id]);
-    */
+    
 
     Star s1 = starRepository.GetById(11);
     Console.WriteLine(s1);
+    */
+}
 
 
-    // TODO Tester la DB via EFCore
+// TODO Tester la DB via EFCore
+using (UniversDataContext context = new UniversDataContext(connectionString))
+{
+    foreach(Galaxy g in context.Galaxy.Where(g => g.Name.StartsWith("Voie")))
+    {
+        Console.WriteLine($"[{g.Id}] {g.Name}");
+    }
+
+    /*
+        context.Galaxy.Where(g => g.Name.StartsWith("Voie")
+            ↓
+        SELECT [g].[Id], [g].[Description], [g].[Name]
+        FROM [Galaxy] AS [g]
+        WHERE [g].[Name] LIKE N'Voie%'
+        go
+    */
+
+    foreach (Planet p in context.Planet)
+    {
+        Console.WriteLine($"[{p.Id}] {p.Name}");
+    }
 }

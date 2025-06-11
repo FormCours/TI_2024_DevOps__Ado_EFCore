@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Univers.Common", "Univers.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Univers.DAL.ADO", "Univers.DAL.ADO\Univers.DAL.ADO.csproj", "{367CB05D-98F9-462C-B719-537F86CAC21E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Univers.DAL.EFCore", "Univers.DAL.EFCore\Univers.DAL.EFCore.csproj", "{A389DF86-E147-4434-B916-3B0797F86256}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{367CB05D-98F9-462C-B719-537F86CAC21E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{367CB05D-98F9-462C-B719-537F86CAC21E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{367CB05D-98F9-462C-B719-537F86CAC21E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A389DF86-E147-4434-B916-3B0797F86256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A389DF86-E147-4434-B916-3B0797F86256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A389DF86-E147-4434-B916-3B0797F86256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A389DF86-E147-4434-B916-3B0797F86256}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
