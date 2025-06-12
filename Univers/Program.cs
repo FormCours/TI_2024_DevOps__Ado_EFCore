@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 using Univers.Common.Models;
 using Univers.Common.Repositories;
@@ -84,22 +85,58 @@ using (DbConnection connection = new SqlConnection(connectionString))
 // TODO Tester la DB via EFCore
 using (UniversDataContext context = new UniversDataContext(connectionString))
 {
-    foreach(Galaxy g in context.Galaxy.Where(g => g.Name.StartsWith("Voie")))
-    {
-        Console.WriteLine($"[{g.Id}] {g.Name}");
-    }
+    //Console.WriteLine("Galaxie qui commence par \"Voie\"");
+    //foreach(Galaxy g in context.Galaxy.Where(g => g.Name.StartsWith("Voie")))
+    //{
+    //    Console.WriteLine($" - [{g.Id}] {g.Name}");
+    //}
+    //Console.WriteLine();
+    ///*
+    //    context.Galaxy.Where(g => g.Name.StartsWith("Voie")
+    //        ↓
+    //    SELECT [g].[Id], [g].[Description], [g].[Name]
+    //    FROM [Galaxy] AS [g]
+    //    WHERE [g].[Name] LIKE N'Voie%'
+    //    go
+    //*/
 
+    //Console.WriteLine("Liste des planetes");
+    //foreach (Planet p in context.Planet)
+    //{
+    //    Console.WriteLine($" - [{p.Id}] {p.Name}");
+    //}
+    //Console.WriteLine();
+
+    Console.WriteLine("Détails de l'etoile \"Soleil\"");
+    Star? sun = context.Star.Where(s => s.Name == "Soleil")
+                            .Include(s => s.Galaxy)
+                            .Include(s => s.Planets)
+                            .SingleOrDefault();
+    if(sun is not null)
+    {
+        Console.WriteLine($"Nom : {sun.Name}");
+        Console.WriteLine($"Est mouru : {sun.IsDeath}");
+        Console.WriteLine($"Galaxie : {sun.Galaxy!.Name}");
+        Console.WriteLine($"Nombre de planet : {sun.Planets!.Count()}");
+    }
+    else
+    {
+        Console.WriteLine("Le soleil se trouve dans une autre galaxie");
+    }
+    <
     /*
-        context.Galaxy.Where(g => g.Name.StartsWith("Voie")
-            ↓
-        SELECT [g].[Id], [g].[Description], [g].[Name]
-        FROM [Galaxy] AS [g]
-        WHERE [g].[Name] LIKE N'Voie%'
-        go
+        SELECT [t].[Id], [t].[GalaxyId], [t].[IsDeath], [t].[Name], [t].[Id0], [t].[Description], [t].[Name0], [t0].[StarId], [t0].[PlanetId], [t0].[Id], [t0].[Gravity], [t0].[Name], [t0].[Satelite]
+        FROM (
+            SELECT TOP(2) [s].[Id], [s].[GalaxyId], [s].[IsDeath], [s].[Name], [g].[Id] AS [Id0], [g].[Description], [g].[Name] AS [Name0]
+            FROM [Star] AS [s]
+            INNER JOIN [Galaxy] AS [g] ON [s].[GalaxyId] = [g].[Id]
+            WHERE [s].[Name] = N'Soleil'
+        ) AS [t]
+        LEFT JOIN (
+            SELECT [r].[StarId], [r].[PlanetId], [p].[Id], [p].[Gravity], [p].[Name], [p].[Satelite]
+            FROM [Rel__Star_Planet] AS [r]
+            INNER JOIN [Planet] AS [p] ON [r].[PlanetId] = [p].[Id]
+        ) AS [t0] ON [t].[Id] = [t0].[StarId]
+        ORDER BY [t].[Id], [t].[Id0], [t0].[StarId], [t0].[PlanetId]
     */
-
-    foreach (Planet p in context.Planet)
-    {
-        Console.WriteLine($"[{p.Id}] {p.Name}");
-    }
 }
