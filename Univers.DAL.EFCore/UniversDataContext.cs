@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Reflection.Metadata;
 using Univers.Common.Models;
 using Univers.DAL.EFCore.Configs;
 
@@ -47,6 +48,37 @@ namespace Univers.DAL.EFCore
 
             // - Ajout des fichiers de config via une assembly
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+            // Relation entre les models
+            // https://learn.microsoft.com/en-us/ef/core/modeling/relationships
+
+            // - Many-to-Many : Star__Planet
+            modelBuilder.Entity<Star>()
+                .HasMany(s => s.Planets)   
+                .WithMany(p => p.Stars)
+                .UsingEntity(
+                    "Rel__Star_Planet",
+                    r => r.HasOne(typeof(Planet))
+                        .WithMany()
+                        .HasConstraintName("FK_Rel__Star_Planet__Planet")
+                        .HasForeignKey("PlanetId")
+                        .HasPrincipalKey("Id"),
+                    l => l.HasOne(typeof(Star))
+                        .WithMany()
+                        .HasConstraintName("FK_Rel__Star_Planet__Star")
+                        .HasForeignKey("StarId")
+                        .HasPrincipalKey("Id"),
+                    j => j.HasKey("StarId", "PlanetId"));
+
+            // - One-to-Many : Galaxy__Star
+            modelBuilder.Entity<Galaxy>()
+                .HasMany(g => g.Stars)
+                .WithOne(s => s.Galaxy)
+                .HasConstraintName("FK_Star__Galaxy")
+                .HasForeignKey(s => s.GalaxyId)
+                .IsRequired();
+
         }
     }
 }

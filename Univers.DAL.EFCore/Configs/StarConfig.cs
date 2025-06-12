@@ -40,8 +40,6 @@ namespace Univers.DAL.EFCore.Configs
             // Index
             builder.HasIndex(s => s.Name)
                 .HasDatabaseName("IDX_Star__Name");
-
-            // TO DO Relations
         }
     }
 }
