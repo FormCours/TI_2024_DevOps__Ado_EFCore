@@ -31,6 +31,7 @@ namespace Univers.DAL.EFCore
             // La config des models
             modelBuilder.ApplyConfiguration(new PlanetConfig());
             modelBuilder.ApplyConfiguration(new GalaxyConfig());
+            modelBuilder.ApplyConfiguration(new StarConfig());
         }
     }
 }
