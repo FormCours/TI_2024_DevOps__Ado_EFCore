@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Univers.Common.Models;
 using Univers.DAL.EFCore.Configs;
 
@@ -29,9 +30,23 @@ namespace Univers.DAL.EFCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // La config des models
+            // - Sans fichier dédié
+            /*
+            modelBuilder.Entity<Planet>()
+                .Property(p => p.Gravity)
+                .HasPrecision(7, 4)
+                .HasConversion<double>();
+            */
+
+            // - Ajout des fichiers de config "manuellement"
+            /*
             modelBuilder.ApplyConfiguration(new PlanetConfig());
             modelBuilder.ApplyConfiguration(new GalaxyConfig());
             modelBuilder.ApplyConfiguration(new StarConfig());
+            */
+
+            // - Ajout des fichiers de config via une assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
